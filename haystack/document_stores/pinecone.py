@@ -70,6 +70,9 @@ class PineconeDocumentStore(BaseDocumentStore):
         recreate_index: bool = False,
         metadata_config: Optional[Dict] = None,
         validate_index_sync: bool = True,
+        embedding_namespace: str = "vectors",
+        document_namespace: str = "no-vectors"
+
     ):
         """
         :param api_key: Pinecone vector database API key ([https://app.pinecone.io](https://app.pinecone.io)).
@@ -105,6 +108,7 @@ class PineconeDocumentStore(BaseDocumentStore):
             [selective metadata filtering](https://www.pinecone.io/docs/manage-indexes/#selective-metadata-indexing) feature.
             Should be in the format `{"indexed": ["metadata-field-1", "metadata-field-2", "metadata-field-n"]}`. By default,
             no fields are indexed.
+        :param embedding_namespace: Useful for storing multi-tenant customers and separating them by namespaces, learn more about namespaces (https://docs.pinecone.io/docs/namespaces)
         """
         if metadata_config is None:
             metadata_config = {"indexed": []}
@@ -137,8 +141,8 @@ class PineconeDocumentStore(BaseDocumentStore):
         self.embedding_field = embedding_field
         self.progress_bar = progress_bar
         self.duplicate_documents = duplicate_documents
-        self.document_namespace = "no-vectors"
-        self.embedding_namespace = "vectors"
+        self.document_namespace = document_namespace
+        self.embedding_namespace = embedding_namespace
 
         # Pinecone index params
         self.replicas = replicas
